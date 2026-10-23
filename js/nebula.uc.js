@@ -1621,6 +1621,7 @@
       this.scheduleUpdate = this.scheduleUpdate.bind(this);
       this.onPopupShown = this.startTracking.bind(this);
       this.onPopupHidden = this.stopTracking.bind(this);
+      this.onPopupHiding = this.stopTracking.bind(this);
     }
 
     init() {
@@ -1646,6 +1647,7 @@
         );
 
       this.panel.addEventListener("popupshown", this.onPopupShown);
+      this.panel.addEventListener("popuphiding", this.onPopupHiding);
       this.panel.addEventListener("popuphidden", this.onPopupHidden);
       this.resizeObserver = new ResizeObserver(this.scheduleUpdate);
       this.resizeObserver.observe(this.panel);
@@ -1690,6 +1692,13 @@
     update() {
       const p = this.panel;
       if (!p) return;
+
+      // ResizeObserver and window resize events can run after CtrlTab begins
+      // closing. The panel can retain a non-zero rect then, so do not recreate
+      // an overlay unless the native popup is still open.
+      if (p.state && p.state !== "open" && p.state !== "showing") {
+        return this.hideOverlays();
+      }
 
       const r = p.getBoundingClientRect();
       const cs = getComputedStyle(p);
@@ -1740,6 +1749,7 @@
 
     destroy() {
       this.panel?.removeEventListener("popupshown", this.onPopupShown);
+      this.panel?.removeEventListener("popuphiding", this.onPopupHiding);
       this.panel?.removeEventListener("popuphidden", this.onPopupHidden);
       window.removeEventListener("resize", this.scheduleUpdate);
       this.panel?.removeEventListener("transitionrun", this.scheduleUpdate);
