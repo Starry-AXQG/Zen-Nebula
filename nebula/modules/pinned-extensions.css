@@ -88,6 +88,26 @@
     box-shadow: 0 0 3px light-dark(rgb(255 255 255 / 95%), rgb(0 0 0 / 95%)) !important;
   }
 
+  /* Customize mode wraps an item dropped here in a toolbarpaletteitem, and
+   * the wrapper becomes the flex item. Without the order the dropped
+   * extension landed beside the tabs instead of above the pins. */
+  #TabsToolbar-customization-target
+    > toolbarpaletteitem:not(
+      #wrapper-tabbrowser-tabs,
+      #wrapper-zen-media-controls-toolbar,
+      :has(> toolbarspring)
+    ) {
+    order: -1 !important;
+    flex-grow: 1 !important;
+    min-width: 32px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #TabsToolbar-customization-target > #tabbrowser-tabs {
+    flex-basis: 100% !important;
+  }
+
   #TabsToolbar-customization-target toolbarbutton,
   #TabsToolbar-customization-target stack {
     --toolbarbutton-active-background: transparent !important;

@@ -2,7 +2,7 @@
 // @name           Nebula Nova
 // @description    Central engine for Nebula Nova with all modules
 // @author         ItsTatsuya
-// @version        3.6.1
+// @version        4.0.0
 // @include        main
 // @grant          none
 // ==/UserScript==
@@ -170,8 +170,9 @@
       };
 
       this.updateFaviconColor = this.updateFaviconColor.bind(this);
-      this.updateTransparentPage = this.updateTransparentPage.bind(this);
-      this._locationListener = null;
+      this.updateLoadingState = this.updateLoadingState.bind(this);
+      this.updateSliding = this.updateSliding.bind(this);
+      this._toolbox = null;
       this._configSyncTimer = null;
     }
 
@@ -221,6 +222,14 @@
       });
       updateCompactMode();
 
+      // The compact sidebar slides in and out partly off-screen, where the
+      // transparent-page glass filter has no backdrop and would show its
+      // floor as a black edge. Mark the slide so CSS uses plain glass then.
+      this._toolbox = document.getElementById("navigator-toolbox");
+      this._toolbox?.addEventListener("transitionrun", this.updateSliding);
+      this._toolbox?.addEventListener("transitionend", this.updateSliding);
+      this._toolbox?.addEventListener("transitioncancel", this.updateSliding);
+
       // Toolbar mode detection
       this.modeObserver = new MutationObserver(() => this.updateToolbarModes());
       this.modeObserver.observe(this.root, {
@@ -256,43 +265,42 @@
       // Initial run
       this.updateFaviconColor();
 
-      // Split view and Glance show more than the selected tab, so watch every
-      // tab's location; selecting a tab does not fire this listener.
-      this._locationListener = {
-        onLocationChange: (_browser, webProgress) => {
-          if (webProgress?.isTopLevel) this.updateTransparentPage();
-        },
-      };
-      gBrowser.addTabsProgressListener(this._locationListener);
+      // The tab loading animation keys off one root attribute instead of a
+      // :has() over every tab, which restyled the page area on each change.
       gBrowser.tabContainer.addEventListener(
         "TabSelect",
-        this.updateTransparentPage,
+        this.updateLoadingState,
       );
-      this.updateTransparentPage();
+      gBrowser.tabContainer.addEventListener(
+        "TabAttrModified",
+        this.updateLoadingState,
+      );
+      this.updateLoadingState();
 
       Nebula.logger.log("✅ [Polyfill] Detection active.");
     }
 
-    /** Nebula makes about: pages transparent; the sidebar glass needs an opaque floor there. */
-    updateTransparentPage() {
+    /** Marks the compact sidebar while its slide transition runs. */
+    updateSliding(e) {
+      if (e.target !== this._toolbox || e.propertyName !== "translate") return;
+      this._toolbox.toggleAttribute(
+        "nebula-sliding",
+        e.type === "transitionrun",
+      );
+    }
+
+    /** Mirrors the selected tab's busy state for the tab loading animation. */
+    updateLoadingState(e) {
       if (this._destroyed || !window.gBrowser) return;
-      const selected = gBrowser.selectedTab;
-      const visible = new Set([selected]);
-      // A split view shows its whole group; Glance shows the parent tab too.
-      if (selected?.group?.hasAttribute("split-view-group")) {
-        for (const tab of selected.group.tabs) visible.add(tab);
-      }
-      const glanceId = selected?.getAttribute("glance-id");
-      if (glanceId) {
-        for (const tab of gBrowser.tabs) {
-          if (tab.getAttribute("glance-id") === glanceId) visible.add(tab);
-        }
-      }
+      if (
+        e?.type === "TabAttrModified" &&
+        (e.target !== gBrowser.selectedTab ||
+          !e.detail?.changed?.includes("busy"))
+      )
+        return;
       this.root.toggleAttribute(
-        "nebula-transparent-page",
-        [...visible].some((tab) =>
-          tab?.linkedBrowser?.currentURI?.schemeIs("about"),
-        ),
+        "nebula-page-loading",
+        gBrowser.selectedTab?.hasAttribute("busy") ?? false,
       );
     }
 
@@ -318,7 +326,7 @@
         this._migrateUiFontPref(prefs);
         const defaults = prefs.getDefaultBranch("");
         for (const entry of this._configPrefs) {
-          // The window-control option belongs to Zen; retain its native default.
+          // Zen owns the window-control and Essentials glow options; keep their native defaults.
           if (!/^(?:var-)?nebula-/.test(entry.property)) continue;
           const value = entry.defaultValue;
           try {
@@ -423,7 +431,7 @@
     }
 
     /**
-     * Transparent about: pages need an opaque floor under the sidebar blur.
+     * Transparent pages need an opaque floor under the glass blur.
      * Gecko skips CSS filter functions after a url() filter, so the floor and
      * the user's blur and saturation are generated into one SVG filter.
      */
@@ -441,13 +449,17 @@
       const amount = saturation[2]
         ? Number(saturation[1]) / 100
         : Number(saturation[1]);
+      // The floor is clipped to the element: unclipped, it fills the blur's
+      // inflated region and darkens the edges. Resetting alpha after the blur
+      // renormalises the edges to pixels inside the element, so opaque pages
+      // match plain blur().
       const filter = (id, color) =>
         `<filter id="${id}" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">` +
-        `<feFlood flood-color="${color}" result="floor"/>` +
+        `<feFlood flood-color="${color}" x="0" y="0" width="100%" height="100%" result="floor"/>` +
         `<feMerge result="base"><feMergeNode in="floor"/><feMergeNode in="SourceGraphic"/></feMerge>` +
         `<feGaussianBlur in="base" stdDeviation="${blur[1]}" edgeMode="duplicate"/>` +
-        `<feColorMatrix type="saturate" values="${amount}" result="glass"/>` +
-        `<feMerge><feMergeNode in="floor"/><feMergeNode in="glass"/></feMerge></filter>`;
+        `<feComponentTransfer><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer>` +
+        `<feColorMatrix type="saturate" values="${amount}"/></filter>`;
       const svg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
         `<svg xmlns="http://www.w3.org/2000/svg">${filter("dark", "black")}${filter("light", "white")}</svg>`,
       )}`;
@@ -771,6 +783,16 @@
       this.compactObserver?.disconnect();
       this.compactObserver = null;
       this.root.removeAttribute("nebula-compact-mode");
+      if (this._toolbox) {
+        for (const type of [
+          "transitionrun",
+          "transitionend",
+          "transitioncancel",
+        ])
+          this._toolbox.removeEventListener(type, this.updateSliding);
+        this._toolbox.removeAttribute("nebula-sliding");
+        this._toolbox = null;
+      }
       this.modeObserver?.disconnect();
       this._gBrowserWaitResolve?.(false);
       this._gBrowserWaitResolve = null;
@@ -824,13 +846,14 @@
         );
         gBrowser.tabContainer.removeEventListener(
           "TabSelect",
-          this.updateTransparentPage,
+          this.updateLoadingState,
         );
-        if (this._locationListener)
-          gBrowser.removeTabsProgressListener(this._locationListener);
-        this._locationListener = null;
+        gBrowser.tabContainer.removeEventListener(
+          "TabAttrModified",
+          this.updateLoadingState,
+        );
       }
-      this.root.removeAttribute("nebula-transparent-page");
+      this.root.removeAttribute("nebula-page-loading");
 
       this.root.removeAttribute("nebula-single-toolbar");
       this.root.removeAttribute("nebula-multi-toolbar");
@@ -938,172 +961,6 @@
 
       this.root.removeAttribute("nebula-zen-gradient-contrast-zero");
       Nebula.logger.log("🧹 [GradientSlider] Destroyed");
-    }
-  }
-
-  // ========== NebulaURLBarBackgroundModule ==========
-  class NebulaURLBarBackgroundModule {
-    constructor() {
-      this.root = document.documentElement;
-      this.browser = document.getElementById("browser");
-      this.urlbar = document.getElementById("urlbar");
-      this.overlay = null;
-      this.lastRect = {};
-      this.lastVisible = false;
-      this.animationFrameId = null;
-
-      this.update = this.update.bind(this);
-      this.scheduleUpdate = this.scheduleUpdate.bind(this);
-      this.mutationObserver = null;
-      this.resizeObserver = null;
-    }
-
-    init() {
-      this.browser ??= document.getElementById("browser");
-      this.urlbar ??= document.getElementById("urlbar");
-      if (!this.browser || !this.urlbar) {
-        Nebula.logger.warn(
-          "⚠️ [URLBarBackground] Required elements not found.",
-        );
-        return;
-      }
-
-      this.overlay = document.createElement("div");
-      this.overlay.id = "Nebula-urlbar-background";
-      Object.assign(this.overlay.style, {
-        position: "absolute",
-        display: "none",
-      });
-      this.browser.appendChild(this.overlay);
-
-      this.resizeObserver = new ResizeObserver(this.scheduleUpdate);
-      this.resizeObserver.observe(this.urlbar);
-      this.resizeObserver.observe(this.browser);
-      window.addEventListener("resize", this.scheduleUpdate);
-      this.urlbar.addEventListener("transitionrun", this.scheduleUpdate);
-      this.urlbar.addEventListener("transitionend", this.scheduleUpdate);
-      this.urlbar.addEventListener("animationstart", this.scheduleUpdate);
-      this.urlbar.addEventListener("animationend", this.scheduleUpdate);
-
-      // Start mutation observer for `open` attribute change
-      this.mutationObserver = new MutationObserver(() => this.onMutation());
-      this.mutationObserver.observe(this.urlbar, {
-        attributes: true,
-        attributeFilter: ["open"],
-      });
-
-      if (this.urlbar.hasAttribute("open")) {
-        this.startLiveTracking();
-      }
-
-      Nebula.logger.log("✅ [URLBarBackground] Tracking initialized.");
-    }
-
-    scheduleUpdate() {
-      if (this.animationFrameId !== null) return;
-      this.animationFrameId = requestAnimationFrame(() => {
-        this.animationFrameId = null;
-        this.update();
-      });
-    }
-
-    onMutation() {
-      const isOpen = this.urlbar.hasAttribute("open");
-      if (isOpen) {
-        this.startLiveTracking();
-      } else {
-        this.stopLiveTracking();
-        this.hideOverlay();
-      }
-    }
-
-    update() {
-      const isOpen = this.urlbar.hasAttribute("open");
-      if (!isOpen) {
-        this.stopLiveTracking();
-        this.hideOverlay();
-        return;
-      }
-
-      const rect = this.urlbar.getBoundingClientRect();
-      const style = getComputedStyle(this.urlbar);
-
-      const isVisible =
-        rect.width > 5 &&
-        rect.height > 5 &&
-        style.display !== "none" &&
-        style.visibility !== "hidden" &&
-        rect.bottom > 0 &&
-        rect.top < window.innerHeight;
-
-      const changed =
-        rect.top !== this.lastRect.top ||
-        rect.left !== this.lastRect.left ||
-        rect.width !== this.lastRect.width ||
-        rect.height !== this.lastRect.height;
-
-      if (!changed && this.lastVisible === isVisible) {
-        return;
-      }
-
-      this.lastRect = {
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-        height: rect.height,
-      };
-
-      if (isVisible) {
-        Object.assign(this.overlay.style, {
-          top: `${rect.top + window.scrollY}px`,
-          left: `${rect.left + window.scrollX}px`,
-          width: `${rect.width}px`,
-          height: `${rect.height}px`,
-          display: "block",
-        });
-
-        if (!this.lastVisible) {
-          this.overlay.classList.add("visible");
-          this.lastVisible = true;
-        }
-      } else {
-        this.hideOverlay();
-      }
-    }
-
-    hideOverlay() {
-      if (this.overlay) {
-        this.overlay.classList.remove("visible");
-        this.overlay.style.display = "none";
-      }
-      this.lastVisible = false;
-    }
-
-    startLiveTracking() {
-      this.stopLiveTracking();
-      this.scheduleUpdate();
-    }
-
-    stopLiveTracking() {
-      if (this.animationFrameId !== null) {
-        cancelAnimationFrame(this.animationFrameId);
-        this.animationFrameId = null;
-      }
-    }
-
-    destroy() {
-      this.mutationObserver?.disconnect();
-      window.removeEventListener("resize", this.scheduleUpdate);
-      this.urlbar?.removeEventListener("transitionrun", this.scheduleUpdate);
-      this.urlbar?.removeEventListener("transitionend", this.scheduleUpdate);
-      this.urlbar?.removeEventListener("animationstart", this.scheduleUpdate);
-      this.urlbar?.removeEventListener("animationend", this.scheduleUpdate);
-      this.resizeObserver?.disconnect();
-      this.stopLiveTracking();
-      this.hideOverlay();
-      this.overlay?.remove();
-      this.overlay = null;
-      Nebula.logger.log("🧹 [URLBarBackground] Destroyed.");
     }
   }
 
@@ -1837,98 +1694,6 @@
     }
   }
 
-  // ========== NebulaLibraryActionsModule ==========
-  class NebulaLibraryActionsModule {
-    init() {
-      this.footer = document.getElementById("zen-sidebar-foot-buttons");
-      if (!this.footer) return;
-      this.downloadsCommon = ChromeUtils.importESModule(
-        "moz-src:///browser/components/downloads/DownloadsCommon.sys.mjs",
-      ).DownloadsCommon;
-      this.observer = new MutationObserver(() => {
-        if (this._updateFrame) return;
-        this._updateFrame = requestAnimationFrame(() => {
-          this._updateFrame = null;
-          this.update();
-        });
-      });
-      this.observer.observe(this.footer, {
-        childList: true,
-        subtree: true,
-        characterData: true,
-        attributes: true,
-        attributeFilter: ["downloading"],
-      });
-      this.update();
-    }
-
-    update() {
-      const rows = this.footer.querySelectorAll(
-        ".zen-library-download-list-download",
-      );
-      for (const row of rows) {
-        let actions = row.querySelector(".nebula-library-actions");
-        if (!actions) {
-          actions = document.createXULElement("hbox");
-          actions.classList.add("nebula-library-actions");
-          for (const [action, label] of [["show", "Show in folder"]]) {
-            const button = document.createXULElement("toolbarbutton");
-            button.classList.add("toolbarbutton-1", "nebula-library-action");
-            button.setAttribute("data-nebula-download-action", action);
-            button.setAttribute("tooltiptext", label);
-            button.setAttribute("aria-label", label);
-            actions.appendChild(button);
-          }
-          // Keep the native row's open handler from also running.
-          actions.addEventListener("click", (event) => event.stopPropagation());
-          actions.addEventListener("command", (event) => {
-            event.stopPropagation();
-            const action = event.target.getAttribute(
-              "data-nebula-download-action",
-            );
-            const download = row.download;
-            if (!this.hasFile(download)) return;
-            try {
-              if (action === "show") {
-                const file = Cc["@mozilla.org/file/local;1"].createInstance(
-                  Ci.nsIFile,
-                );
-                file.initWithPath(download.target.path);
-                this.downloadsCommon.showDownloadedFile(file);
-              }
-            } catch (error) {
-              Nebula.logger.error(String(error));
-            }
-          });
-          row.appendChild(actions);
-        }
-        const download = row.download;
-        actions.hidden = !download?.stopped;
-        for (const button of actions.children) {
-          button.disabled = !this.hasFile(download);
-        }
-      }
-    }
-
-    hasFile(download) {
-      return !!(
-        download?.succeeded &&
-        !download.deleted &&
-        download.target?.exists &&
-        download.target.path
-      );
-    }
-
-    destroy() {
-      this.observer?.disconnect();
-      if (this._updateFrame) cancelAnimationFrame(this._updateFrame);
-      this._updateFrame = null;
-      this.footer
-        ?.querySelectorAll(".nebula-library-actions")
-        .forEach((actions) => actions.remove());
-    }
-  }
-
   // ========== NebulaSearchSuggestionsModule ==========
   /**
    * Hidden suggestion rows would still take arrow-key selection, so the
@@ -2047,9 +1812,7 @@
   // Register Nebula Modules
   Nebula.register(NebulaPolyfillModule);
   Nebula.register(NebulaGradientSliderModule);
-  Nebula.register(NebulaURLBarBackgroundModule);
   Nebula.register(NebulaMediaCoverArtModule);
-  Nebula.register(NebulaLibraryActionsModule);
   Nebula.register(NebulaMenuModule);
   Nebula.register(NebulaCtrlTabDualBackgroundModule);
   Nebula.register(NebulaSearchSuggestionsModule);

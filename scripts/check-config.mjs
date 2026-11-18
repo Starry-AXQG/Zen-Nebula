@@ -251,10 +251,11 @@ vm.runInContext(
 context.Nebula = context.window.Nebula;
 const polyfill = new context.Polyfill();
 await polyfill.ensureRuntimePrefs();
-assert.equal(defaults.size, fields.length - 1); // Zen owns its window-control preference.
+assert.equal(defaults.size, fields.length - 2); // Zen owns its window-control and Essentials glow preferences.
 assert.equal(saved.get("var-nebula-border-radius"), "21px");
 assert.equal(saved.get("nebula-ui-font"), "poppins");
 assert.ok(!defaults.has("zen.view.experimental-force-window-controls-left"));
+assert.ok(!defaults.has("zen.theme.essentials-favicon-bg"));
 polyfill.syncConfigVariables();
 assert.equal(registered.size, 1);
 let sheet = decodeURIComponent([...registered][0]);
@@ -303,7 +304,7 @@ saved.clear();
 defaults.clear();
 const fresh = new context.Polyfill();
 await fresh.ensureRuntimePrefs();
-assert.equal(defaults.size, fields.length - 1);
+assert.equal(defaults.size, fields.length - 2);
 for (const field of fields.filter((field) =>
   /^(?:var-)?nebula-/.test(field.property),
 )) {

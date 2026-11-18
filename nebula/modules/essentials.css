@@ -56,7 +56,9 @@
   }
 }
 
-#zen-main-app-wrapper:not(:has(#zen-welcome)) {
+/* Zen marks the welcome screen on the root; a :has(#zen-welcome) over the
+ * whole app wrapper was re-checked on every tab insertion. */
+:root:not([zen-welcome-stage]) #zen-main-app-wrapper {
   /* Tab click animation: the only press scale; the stack and hover glow
    * scale with the tab instead of shrinking again on their own. */
   #tabbrowser-tabs:not([movingtab]) {

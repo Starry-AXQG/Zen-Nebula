@@ -1,32 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg">
-  <!-- Sidebar glass for transparent about: pages. The floor and blur share one
-       filter: Gecko skips CSS filter functions that follow a url() filter.
+  <!-- Glass for transparent pages. The floor and blur share one filter: Gecko
+       skips CSS filter functions that follow a url() filter.
+       The floor is clipped to the element; unclipped, it fills the blur's
+       inflated region and darkens the edges. Resetting alpha after the blur
+       renormalises the edges to pixels inside the element, matching plain
+       blur() over opaque pages.
        Fallback only: js/nebula.uc.js generates this filter from the glass
        blur and saturation settings (_underlayDeclarations). -->
   <filter id="dark" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-    <feFlood flood-color="black" result="floor" />
+    <feFlood flood-color="black" x="0" y="0" width="100%" height="100%" result="floor" />
     <feMerge result="base">
       <feMergeNode in="floor" />
       <feMergeNode in="SourceGraphic" />
     </feMerge>
     <feGaussianBlur in="base" stdDeviation="32" edgeMode="duplicate" />
-    <feColorMatrix type="saturate" values="1.4" result="glass" />
-    <feMerge>
-      <feMergeNode in="floor" />
-      <feMergeNode in="glass" />
-    </feMerge>
+    <feComponentTransfer>
+      <feFuncA type="linear" slope="0" intercept="1" />
+    </feComponentTransfer>
+    <feColorMatrix type="saturate" values="1.4" />
   </filter>
   <filter id="light" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-    <feFlood flood-color="white" result="floor" />
+    <feFlood flood-color="white" x="0" y="0" width="100%" height="100%" result="floor" />
     <feMerge result="base">
       <feMergeNode in="floor" />
       <feMergeNode in="SourceGraphic" />
     </feMerge>
     <feGaussianBlur in="base" stdDeviation="32" edgeMode="duplicate" />
-    <feColorMatrix type="saturate" values="1.4" result="glass" />
-    <feMerge>
-      <feMergeNode in="floor" />
-      <feMergeNode in="glass" />
-    </feMerge>
+    <feComponentTransfer>
+      <feFuncA type="linear" slope="0" intercept="1" />
+    </feComponentTransfer>
+    <feColorMatrix type="saturate" values="1.4" />
   </filter>
 </svg>

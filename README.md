@@ -1,50 +1,109 @@
-# Nebula Nova
+<div align="center">
 
-![Nebula Nova intro: the title fades in, then the theme's New Tab page rises into view](screenshots/intro.gif)
+<img src="screenshots/banner.svg" alt="Nebula Nova: a glass theme for Zen Browser" width="100%" />
 
-Version **3.6.1**, maintained by **ItsTatsuya**.
+[![Version](https://img.shields.io/badge/version-4.0.0-302b63?style=flat-square)](CHANGELOG.md)
+[![Zen Browser](https://img.shields.io/badge/Zen-1.24-24243e?style=flat-square)](https://zen-browser.app/)
+[![Sine](https://img.shields.io/badge/installs%20with-Sine-0f0c29?style=flat-square)](https://github.com/CosmoCreeper/Sine)
+[![License](https://img.shields.io/github/license/ItsTatsuya/Nebula-Nova?style=flat-square)](LICENSE)
 
-Fork of [Zen-Nebula](https://github.com/JustADumbPrsn/Zen-Nebula). A glass-based theme for [Zen Browser](https://zen-browser.app/). Nebula Nova is installed and configured through [Sine](https://github.com/CosmoCreeper/Sine).
+[Install](#install) · [Features](#features) · [Settings](#settings) · [Troubleshooting](#troubleshooting) · [Changelog](CHANGELOG.md)
 
-## Highlights
+</div>
 
-- Frosted glass on the floating browser UI: compact sidebar, URL bar, find bar, and media player.
-- Tab switch animations, hover glow, and UI and website tints, with separate light and dark colors.
-- Fonts, corner radius, window controls, and layout are all set from Sine's mod settings.
+Nebula Nova turns Zen's floating UI into frosted glass: the compact sidebar, URL bar, find bar and media player blur the page behind them instead of covering it. Everything is configurable from Sine's mod settings, with no CSS editing required.
 
-![Nebula Nova in compact mode, with the glass sidebar showing a tab folder, open tabs, and the media player](screenshots/base.png)
+![Nebula Nova in compact mode, with the glass sidebar showing a tab folder, open tabs and the media player](screenshots/base.png)
+
+## Features
+
+- **Real glass.** The compact sidebar, URL bar, find bar, library, Glance and split-view controls blur the page behind them. Blur strength, color boost and glass color are adjustable.
+- **Works with transparent browsing.** With Transparent Zen or Zen Internet, the glass stays frosted instead of showing sharp page text through it.
+- **Motion.** Tab switch and page loading animations, a dim-and-zoom effect behind the open URL bar, and hover glow on tabs.
+- **Your look.** Separate light and dark colors, corner radius, UI font and weight, window button style, workspace and Essentials styling.
+- **Media.** Optional artwork behind the media player and an animated sound indicator on tabs.
+- **Accessible by default.** Reduced motion turns off the animations; reduced transparency and software rendering swap the glass for solid surfaces.
 
 ## Install
 
-1. Install Sine using its [setup guide](https://github.com/CosmoCreeper/Sine).
-2. In Zen, open **Settings → Cosine Mods** and paste [repo link](https://github.com/ItsTatsuya/Zen-Nebula)
-3. Open the mod's settings (gear icon) to choose the glass, animation, layout, and media options.
-4. Restart Zen after installing or updating the mod so its chrome styles and script load together.
+**Requirements:** [Zen Browser](https://zen-browser.app/) 1.24 or later and the [Sine](https://github.com/CosmoCreeper/Sine) mod manager.
 
-The Sine mod ID and on-disk folder are still `Nebula`, preserving existing installs and preferences after the display-name change.
+1. Install Sine by following its [setup guide](https://github.com/CosmoCreeper/Sine).
+2. In Zen, open **Settings → Cosine Mods** and install from this repository: `https://github.com/ItsTatsuya/Nebula-Nova`
+3. Restart Zen so the styles and the core script load together.
 
-## Configure
+To update, use Sine's update button, then restart Zen.
 
-- **Glass Blur** and **Glass Saturation** control CSS blur on floating browser UI, including the compact sidebar, URL bar, find bar, and media player. Enter a CSS length such as `32px` for blur.
-- **Show artwork behind the media player** is off by default. When enabled, **Media Player Background Style** starts with **Simple blur** for a diffuse background; **Thumbnail** shows a more recognizable image. Changes apply to an open media card without restarting Zen.
-- The other Sine controls adjust tab motion, hover glow, typography, colors, and layout. The preference defaults are in [`preferences.json`](preferences.json), with CSS fallbacks in [`nebula/config.css`](nebula/config.css).
+> [!NOTE]
+> The Sine mod ID and folder are still `Nebula`, so installs and saved settings from Zen-Nebula carry over.
 
-For manual CSS changes, see [Zen's live editing guide](https://docs.zen-browser.app/guides/live-editing).
+## Settings
 
-In noncompact mode, the sidebar sits beside the page, so browser CSS cannot blur the page through it. The glass setting still affects floating UI. Blurring the desktop behind a transparent Zen window depends on the operating system compositor:
+Open **Settings → Cosine Mods → Nebula Nova → ⚙** to configure the theme. Settings are grouped by what they change:
 
-- **Windows 11:** [Mica For Everyone](https://github.com/MicaForEveryone/MicaForEveryone) can apply an Acrylic backdrop to `zen.exe`.
-- **KDE Plasma:** [Better Blur DX](https://github.com/xarblu/kwin-effects-better-blur-dx) can apply blur to the Zen window.
-- **GNOME:** Blur My Shell's Application Blur can blur a transparent Zen window.
+| Group                | What you can change                                                           |
+| -------------------- | ----------------------------------------------------------------------------- |
+| **Appearance**       | Glass blur and color boost, corner radius, gaps and shadows, font, and colors |
+| **Tabs and sidebar** | Hover and selected-tab glow, pinned tabs, folders, Essentials, workspaces     |
+| **Toolbar**          | Window button style and side, address bar suggestions, bookmarks toolbar      |
+| **Motion and media** | Tab, page loading and address bar animations, sound indicator, player artwork |
 
-These compositor effects are separate from Nebula Nova's CSS blur value.
+Colors stay hidden until you tick **Customize colors**. Sizes take CSS lengths such as `32px`. If a value is invalid, Nebula Nova uses the default and keeps what you typed.
 
-The New Tab screenshots use the user's configured start page and wallpaper. A start-page extension such as [Bonjourr](https://addons.mozilla.org/firefox/addon/bonjourr-startpage/) is optional; Nebula Nova does not install or require one.
+The full list of settings, with their defaults, is in the [configuration reference](docs/configuration.md).
+
+## Troubleshooting
+
+<details>
+<summary><b>The sidebar isn't blurred when it is always shown</b></summary>
+
+Outside compact mode the sidebar sits beside the page, not over it, so there is nothing for it to blur. The glass still applies to floating UI such as the URL bar and find bar. To blur the desktop behind a transparent Zen window, use your system's compositor:
+
+- **Windows 11:** [Mica For Everyone](https://github.com/MicaForEveryone/MicaForEveryone) with an Acrylic backdrop on `zen.exe`
+- **KDE Plasma:** [Better Blur DX](https://github.com/xarblu/kwin-effects-better-blur-dx)
+- **GNOME:** Blur My Shell's Application Blur
+
+</details>
+
+<details>
+<summary><b>The glass turned solid</b></summary>
+
+Windows turns on reduced transparency with Energy Saver, and Zen falls back to software rendering when hardware acceleration is unavailable. In both cases the theme switches to solid surfaces on purpose, since blur is either unwanted or cannot work.
+
+</details>
+
+<details>
+<summary><b>A change didn't apply</b></summary>
+
+Restart Zen after installing or updating the theme. **Blur menus and popups** also needs a restart. Other settings apply immediately.
+
+</details>
+
+<details>
+<summary><b>The New Tab page looks different from the screenshot</b></summary>
+
+The screenshot uses a custom start page and wallpaper. A start page extension such as [Bonjourr](https://addons.mozilla.org/firefox/addon/bonjourr-startpage/) is optional; Nebula Nova does not install or need one.
+
+</details>
+
+Still stuck? [Open an issue](https://github.com/ItsTatsuya/Nebula-Nova/issues) with your Zen version, OS, and a screenshot.
+
+## Contributing
+
+Pull requests are welcome. The project uses [Bun](https://bun.sh/):
+
+```sh
+bun install            # dev tools and the pre-commit hook
+bun run check:config   # checks settings against the code and docs
+bun run lint           # Prettier and Stylelint
+```
+
+Read the [configuration reference](docs/configuration.md) before adding a setting. For quick CSS experiments, see Zen's [live editing guide](https://docs.zen-browser.app/guides/live-editing).
 
 ## Credits
 
-Inspired by [Natsumi Browser](https://github.com/greeeen-dev/natsumi-browser), [Lacuna](https://github.com/Tanay-Kar/Lacuna), [My Internet](https://github.com/sameerasw/my-internet), [Pineapple Fried](https://github.com/TheBigWazz/Pineapple-Fried), [Advanced Tab Groups](https://github.com/TFFC-Anoms12/Advanced-Tab-Groups), and [NoGaps](https://github.com/Comp-Tech-Guy/No-Gaps).
+Forked from [Zen-Nebula](https://github.com/JustADumbPrsn/Zen-Nebula) by JustAdumbPrsn and maintained by [ItsTatsuya](https://github.com/ItsTatsuya). Inspired by [Natsumi Browser](https://github.com/greeeen-dev/natsumi-browser), [Lacuna](https://github.com/Tanay-Kar/Lacuna), [My Internet](https://github.com/sameerasw/my-internet), [Pineapple Fried](https://github.com/TheBigWazz/Pineapple-Fried), [Advanced Tab Groups](https://github.com/TFFC-Anoms12/Advanced-Tab-Groups) and [NoGaps](https://github.com/Comp-Tech-Guy/No-Gaps).
 
-Nebula Nova is free to fork and adapt under the repository's [license](LICENSE). Please credit the project when sharing a derivative. Report reproducible issues in the repository's issue tracker.
+## License
 
-See the [configuration standard and full preference audit](docs/configuration.md).
+[GPL-3.0](LICENSE). You are free to fork and adapt Nebula Nova; please credit the project when you share a derivative.

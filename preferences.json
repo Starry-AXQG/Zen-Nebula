@@ -7,13 +7,70 @@
   },
   {
     "type": "separator",
-    "label": "🔤 Typography",
+    "label": "✨ Glass",
+    "margin": "16px 0 12px"
+  },
+  {
+    "type": "string",
+    "property": "var-nebula-glass-blur",
+    "label": "Blur strength",
+    "defaultValue": "32px",
+    "placeholder": "e.g. 32px",
+    "margin": "12px 0"
+  },
+  {
+    "type": "string",
+    "property": "var-nebula-glass-saturation",
+    "label": "Color boost behind the glass",
+    "defaultValue": "140%",
+    "placeholder": "e.g. 140%",
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-blur-popups",
+    "label": "Blur menus and popups (Windows 11)",
+    "defaultValue": true,
+    "disabledOn": ["macos", "linux"],
+    "restart": true,
+    "margin": "12px 0"
+  },
+  {
+    "type": "separator",
+    "label": "📐 Shape and spacing",
+    "margin": "16px 0 12px"
+  },
+  {
+    "type": "string",
+    "property": "var-nebula-border-radius",
+    "label": "Corner radius",
+    "defaultValue": "13px",
+    "placeholder": "e.g. 13px",
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-nogaps-mod",
+    "label": "Remove the gaps around web content",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-tabs-no-shadow",
+    "label": "Remove the shadow around web content",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "separator",
+    "label": "🔤 Font",
     "margin": "16px 0 12px"
   },
   {
     "type": "dropdown",
     "property": "nebula-ui-font",
-    "label": "UI font",
+    "label": "Font",
     "defaultValue": "browser",
     "placeholder": false,
     "options": [
@@ -69,9 +126,24 @@
     "margin": "12px 0"
   },
   {
+    "type": "checkbox",
+    "property": "nebula-ui-font-custom-enable",
+    "label": "Use a font installed on my computer",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "string",
+    "property": "nebula-ui-font-custom",
+    "label": "Font name (applies when you click away)",
+    "defaultValue": "",
+    "placeholder": "e.g. Cascadia Code",
+    "margin": "12px 0"
+  },
+  {
     "type": "dropdown",
     "property": "nebula-ui-font-weight",
-    "label": "UI font weight (preset and custom fonts)",
+    "label": "Font weight",
     "defaultValue": "400",
     "placeholder": false,
     "options": [
@@ -80,7 +152,7 @@
         "value": "100"
       },
       {
-        "label": "Extra Light (200)",
+        "label": "Extra light (200)",
         "value": "200"
       },
       {
@@ -96,7 +168,7 @@
         "value": "500"
       },
       {
-        "label": "Semi Bold (600)",
+        "label": "Semibold (600)",
         "value": "600"
       },
       {
@@ -107,45 +179,21 @@
     "margin": "12px 0"
   },
   {
+    "type": "separator",
+    "label": "🖌️ Colors",
+    "margin": "16px 0 12px"
+  },
+  {
     "type": "checkbox",
-    "property": "nebula-ui-font-custom-enable",
-    "label": "Use a custom UI font (installed on your system)",
+    "property": "nebula-show-color-settings",
+    "label": "Customize colors",
     "defaultValue": false,
     "margin": "12px 0"
   },
   {
     "type": "string",
-    "property": "nebula-ui-font-custom",
-    "label": "Custom font family (enable above; click away to apply)",
-    "placeholder": "e.g. Cascadia Code",
-    "margin": "12px 0",
-    "defaultValue": ""
-  },
-  {
-    "type": "separator",
-    "label": "✨ Glass",
-    "margin": "16px 0 12px"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-glass-blur",
-    "label": "Glass Blur",
-    "defaultValue": "32px",
-    "placeholder": "e.g. 32px",
-    "margin": "12px 0"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-glass-saturation",
-    "label": "Glass Saturation",
-    "defaultValue": "140%",
-    "placeholder": "e.g. 140%",
-    "margin": "12px 0"
-  },
-  {
-    "type": "string",
     "property": "var-nebula-color-glass-light",
-    "label": "Glass Color (light)",
+    "label": "Glass in light mode",
     "defaultValue": "rgba(255, 255, 255, 0.4)",
     "placeholder": "rgba(255, 255, 255, 0.4)",
     "margin": "12px 0"
@@ -153,126 +201,54 @@
   {
     "type": "string",
     "property": "var-nebula-color-glass-dark",
-    "label": "Glass Color (dark)",
+    "label": "Glass in dark mode",
     "defaultValue": "rgba(0, 0, 0, 0.4)",
     "placeholder": "rgba(0, 0, 0, 0.4)",
     "margin": "12px 0"
   },
   {
-    "type": "separator",
-    "label": "🌌 Tint",
-    "margin": "16px 0 12px"
-  },
-  {
     "type": "string",
     "property": "var-nebula-ui-tint-light",
-    "label": "UI Tint (light)",
-    "defaultValue": "rgba(255,255,255,0.2)",
-    "placeholder": "rgba(255,255,255,0.2)",
+    "label": "Browser tint in light mode",
+    "defaultValue": "rgba(255, 255, 255, 0.2)",
+    "placeholder": "rgba(255, 255, 255, 0.2)",
     "margin": "12px 0"
   },
   {
     "type": "string",
     "property": "var-nebula-ui-tint-dark",
-    "label": "UI Tint (dark)",
-    "defaultValue": "rgba(0,0,0,0.2)",
-    "placeholder": "rgba(0,0,0,0.2)",
-    "margin": "12px 0"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-website-tint-light",
-    "label": "Website Tint (light)",
-    "defaultValue": "rgba(255,255,255,0)",
-    "placeholder": "rgba(255,255,255,0)",
-    "margin": "12px 0"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-website-tint-dark",
-    "label": "Website Tint (dark)",
-    "defaultValue": "rgba(0,0,0,0)",
-    "placeholder": "rgba(0,0,0,0)",
-    "margin": "12px 0"
-  },
-  {
-    "type": "separator",
-    "label": "🌠 Tab colors",
-    "margin": "16px 0 12px"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-tabs-minimum-light",
-    "label": "Pinned Tabs (light)",
-    "defaultValue": "rgba(255, 255, 255, 0.1)",
-    "placeholder": "rgba(255, 255, 255, 0.1)",
-    "margin": "12px 0"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-tabs-minimum-dark",
-    "label": "Pinned Tabs (dark)",
+    "label": "Browser tint in dark mode",
     "defaultValue": "rgba(0, 0, 0, 0.2)",
     "placeholder": "rgba(0, 0, 0, 0.2)",
     "margin": "12px 0"
   },
   {
     "type": "string",
-    "property": "var-nebula-tabs-default-light",
-    "label": "Tab Default (light)",
-    "defaultValue": "rgba(255,255,255,0.25)",
-    "placeholder": "rgba(255,255,255,0.25)",
+    "property": "var-nebula-website-tint-light",
+    "label": "Website tint in light mode",
+    "defaultValue": "rgba(255, 255, 255, 0)",
+    "placeholder": "rgba(255, 255, 255, 0)",
     "margin": "12px 0"
   },
   {
     "type": "string",
-    "property": "var-nebula-tabs-default-dark",
-    "label": "Tab Default (dark)",
-    "defaultValue": "rgba(0,0,0,0.35)",
-    "placeholder": "rgba(0,0,0,0.35)",
+    "property": "var-nebula-website-tint-dark",
+    "label": "Website tint in dark mode",
+    "defaultValue": "rgba(0, 0, 0, 0)",
+    "placeholder": "rgba(0, 0, 0, 0)",
     "margin": "12px 0"
   },
   {
-    "type": "string",
-    "property": "var-nebula-tabs-hover-light",
-    "label": "Tab Hover (light)",
-    "defaultValue": "rgba(255,255,255,0.35)",
-    "placeholder": "rgba(255,255,255,0.35)",
-    "margin": "12px 0"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-tabs-hover-dark",
-    "label": "Tab Hover (dark)",
-    "defaultValue": "rgba(0,0,0,0.45)",
-    "placeholder": "rgba(0,0,0,0.45)",
-    "margin": "12px 0"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-tabs-selected-light",
-    "label": "Tab Selected (light)",
-    "defaultValue": "rgba(255,255,255,0.45)",
-    "placeholder": "rgba(255,255,255,0.45)",
-    "margin": "12px 0"
-  },
-  {
-    "type": "string",
-    "property": "var-nebula-tabs-selected-dark",
-    "label": "Tab Selected (dark)",
-    "defaultValue": "rgba(0,0,0,0.55)",
-    "placeholder": "rgba(0,0,0,0.55)",
-    "margin": "12px 0"
-  },
-  {
-    "type": "separator",
-    "label": "🌑 Shadows",
-    "margin": "16px 0 12px"
+    "id": "nebula-website-tint-note",
+    "type": "text",
+    "label": "Website tint only shows on see-through pages, such as with Transparent Zen.",
+    "margin": "0 0 8px",
+    "size": "12px"
   },
   {
     "type": "string",
     "property": "var-nebula-color-shadow-light",
-    "label": "Color of Shadows (light)",
+    "label": "Shadow in light mode",
     "defaultValue": "rgba(255, 255, 255, 0.055)",
     "placeholder": "rgba(255, 255, 255, 0.055)",
     "margin": "12px 0"
@@ -280,203 +256,90 @@
   {
     "type": "string",
     "property": "var-nebula-color-shadow-dark",
-    "label": "Color of Shadows (dark)",
+    "label": "Shadow in dark mode",
     "defaultValue": "rgba(0, 0, 0, 0.55)",
     "placeholder": "rgba(0, 0, 0, 0.55)",
     "margin": "12px 0"
   },
   {
-    "type": "separator",
-    "label": "🌙 Layout",
-    "margin": "16px 0 12px"
-  },
-  {
     "type": "string",
-    "property": "var-nebula-border-radius",
-    "label": "UI corner radius",
-    "defaultValue": "13px",
-    "placeholder": "e.g. 13px",
+    "property": "var-nebula-tabs-default-light",
+    "label": "Tab in light mode",
+    "defaultValue": "rgba(255, 255, 255, 0.25)",
+    "placeholder": "rgba(255, 255, 255, 0.25)",
     "margin": "12px 0"
   },
   {
     "type": "string",
-    "property": "var-nebula-essentials-width",
-    "label": "Minimum Essentials tab width",
-    "defaultValue": "60px",
-    "placeholder": "e.g. 60px",
+    "property": "var-nebula-tabs-default-dark",
+    "label": "Tab in dark mode",
+    "defaultValue": "rgba(0, 0, 0, 0.35)",
+    "placeholder": "rgba(0, 0, 0, 0.35)",
     "margin": "12px 0"
   },
   {
     "type": "string",
-    "property": "var-nebula-workspace-grayscale",
-    "label": "Idle workspace grayscale",
-    "defaultValue": "100%",
-    "placeholder": "e.g. 100%",
+    "property": "var-nebula-tabs-hover-light",
+    "label": "Hovered tab in light mode",
+    "defaultValue": "rgba(255, 255, 255, 0.35)",
+    "placeholder": "rgba(255, 255, 255, 0.35)",
     "margin": "12px 0"
   },
   {
-    "type": "checkbox",
-    "property": "nebula-macos-style-buttons",
-    "label": "Use macOS style window controls",
-    "margin": "12px 0",
-    "defaultValue": false
+    "type": "string",
+    "property": "var-nebula-tabs-hover-dark",
+    "label": "Hovered tab in dark mode",
+    "defaultValue": "rgba(0, 0, 0, 0.45)",
+    "placeholder": "rgba(0, 0, 0, 0.45)",
+    "margin": "12px 0"
   },
   {
-    "type": "checkbox",
-    "property": "zen.view.experimental-force-window-controls-left",
-    "label": "Place window controls on the left",
-    "margin": "12px 0",
-    "defaultValue": false
+    "type": "string",
+    "property": "var-nebula-tabs-selected-light",
+    "label": "Selected tab in light mode",
+    "defaultValue": "rgba(255, 255, 255, 0.45)",
+    "placeholder": "rgba(255, 255, 255, 0.45)",
+    "margin": "12px 0"
   },
   {
-    "type": "checkbox",
-    "property": "nebula-tabs-no-shadow",
-    "label": "Remove the shadow around web content",
-    "margin": "12px 0",
-    "defaultValue": false
+    "type": "string",
+    "property": "var-nebula-tabs-selected-dark",
+    "label": "Selected tab in dark mode",
+    "defaultValue": "rgba(0, 0, 0, 0.55)",
+    "placeholder": "rgba(0, 0, 0, 0.55)",
+    "margin": "12px 0"
   },
   {
-    "type": "checkbox",
-    "property": "nebula-nogaps-mod",
-    "label": "Remove browser gaps",
-    "margin": "12px 0",
-    "defaultValue": false
+    "type": "string",
+    "property": "var-nebula-tabs-minimum-light",
+    "label": "Pinned tabs, folders and workspaces in light mode",
+    "defaultValue": "rgba(255, 255, 255, 0.1)",
+    "placeholder": "rgba(255, 255, 255, 0.1)",
+    "margin": "12px 0"
   },
   {
-    "type": "checkbox",
-    "property": "nebula-blur-popups",
-    "label": "Blur menus and popups (Windows 11, restart required)",
-    "margin": "12px 0",
-    "defaultValue": true
+    "type": "string",
+    "property": "var-nebula-tabs-minimum-dark",
+    "label": "Pinned tabs, folders and workspaces in dark mode",
+    "defaultValue": "rgba(0, 0, 0, 0.2)",
+    "placeholder": "rgba(0, 0, 0, 0.2)",
+    "margin": "12px 0"
   },
   {
     "type": "text",
-    "label": "🌎 Behavior",
+    "label": "🗂️ Tabs and sidebar",
     "margin": "24px 0 12px",
     "size": "20px"
   },
   {
     "type": "separator",
-    "label": "🔭 Animations",
-    "margin": "16px 0 12px"
-  },
-  {
-    "type": "dropdown",
-    "property": "nebula-tab-switch-animation",
-    "label": "Tab Switch Animation",
-    "value": "number",
-    "defaultValue": 1,
-    "placeholder": false,
-    "options": [
-      {
-        "label": "No Animation",
-        "value": 0
-      },
-      {
-        "label": "Default",
-        "value": 1
-      },
-      {
-        "label": "Bounce Smooth",
-        "value": 2
-      },
-      {
-        "label": "Bounce Up",
-        "value": 3
-      },
-      {
-        "label": "Crossfade",
-        "value": 4
-      },
-      {
-        "label": "Zoom Out",
-        "value": 5
-      }
-    ],
-    "margin": "12px 0"
-  },
-  {
-    "type": "dropdown",
-    "property": "nebula-tab-loading-animation",
-    "label": "Tab Loading Animation",
-    "value": "number",
-    "defaultValue": 1,
-    "placeholder": false,
-    "options": [
-      {
-        "label": "No Animation",
-        "value": 0
-      },
-      {
-        "label": "Default",
-        "value": 1
-      },
-      {
-        "label": "More Blur",
-        "value": 2
-      },
-      {
-        "label": "Scale Blur",
-        "value": 3
-      },
-      {
-        "label": "Grayscale",
-        "value": 4
-      },
-      {
-        "label": "Grayscale + Blur",
-        "value": 5
-      },
-      {
-        "label": "Blur (Old Default)",
-        "value": 6
-      }
-    ],
-    "margin": "12px 0"
-  },
-  {
-    "type": "dropdown",
-    "property": "nebula-urlbar-animation",
-    "label": "URL Bar Animation",
-    "value": "number",
-    "defaultValue": 1,
-    "placeholder": false,
-    "options": [
-      {
-        "label": "No Animation",
-        "value": 0
-      },
-      {
-        "label": "Default",
-        "value": 1
-      },
-      {
-        "label": "Scale Down",
-        "value": 2
-      },
-      {
-        "label": "Grayscale",
-        "value": 3
-      }
-    ],
-    "margin": "12px 0"
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-disable-menu-animations",
-    "label": "Disable context menu animations",
-    "margin": "12px 0",
-    "defaultValue": false
-  },
-  {
-    "type": "separator",
-    "label": "🛸 Glow",
+    "label": "🛸 Tab style",
     "margin": "16px 0 12px"
   },
   {
     "type": "dropdown",
     "property": "nebula-glow-gradient",
-    "label": "Hover Glow Animations",
+    "label": "Glow on hover",
     "value": "number",
     "defaultValue": 1,
     "placeholder": false,
@@ -486,7 +349,7 @@
         "value": 0
       },
       {
-        "label": "Zen Color",
+        "label": "Zen color",
         "value": 1
       },
       {
@@ -494,7 +357,7 @@
         "value": 2
       },
       {
-        "label": "RGB",
+        "label": "Rainbow",
         "value": 3
       }
     ],
@@ -503,7 +366,7 @@
   {
     "type": "dropdown",
     "property": "nebula-active-tab-glow",
-    "label": "Active Tab Glow",
+    "label": "Glow on the selected tab",
     "value": "number",
     "defaultValue": 0,
     "placeholder": false,
@@ -517,42 +380,58 @@
         "value": 1
       },
       {
-        "label": "Tab Icon Color",
+        "label": "Tab icon color",
         "value": 2
       }
     ],
     "margin": "12px 0"
   },
   {
+    "type": "checkbox",
+    "property": "nebula-pinned-tabs-bg",
+    "label": "Remove pinned tab backgrounds",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-disable-container-styling",
+    "label": "Turn off container tab colors",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-folder-styling",
+    "label": "Restyle Zen folders",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
     "type": "separator",
-    "label": "🔖 Bookmarks",
+    "label": "⭐ Essentials",
     "margin": "16px 0 12px"
   },
   {
-    "type": "dropdown",
-    "value": "number",
-    "property": "nebula-bookmarks-autohide",
-    "label": "Bookmarks bar visibility",
-    "defaultValue": 0,
-    "placeholder": false,
-    "options": [
-      {
-        "label": "Always visible",
-        "value": 0
-      },
-      {
-        "label": "Show on toolbar hover",
-        "value": 1
-      },
-      {
-        "label": "Show while searching",
-        "value": 2
-      },
-      {
-        "label": "Show on hover or search",
-        "value": 3
-      }
-    ],
+    "type": "string",
+    "property": "var-nebula-essentials-width",
+    "label": "Minimum Essentials tile width",
+    "defaultValue": "60px",
+    "placeholder": "e.g. 60px",
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-essentials-gray-icons",
+    "label": "Gray out Essentials icons until hovered or selected",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "zen.theme.essentials-favicon-bg",
+    "label": "Show the icon glow behind the selected Essential",
+    "defaultValue": true,
     "margin": "12px 0"
   },
   {
@@ -563,7 +442,7 @@
   {
     "type": "dropdown",
     "property": "nebula-workspace-style",
-    "label": "Workspace Button Style",
+    "label": "Workspace buttons",
     "value": "number",
     "defaultValue": 1,
     "placeholder": false,
@@ -577,38 +456,247 @@
         "value": 1
       },
       {
-        "label": "MacOS Dock Inspired",
+        "label": "macOS dock",
         "value": 2
       }
     ],
     "margin": "12px 0"
   },
   {
+    "type": "string",
+    "property": "var-nebula-workspace-grayscale",
+    "label": "Gray out inactive workspace icons",
+    "defaultValue": "100%",
+    "placeholder": "e.g. 100%",
+    "margin": "12px 0"
+  },
+  {
     "type": "checkbox",
     "property": "nebula-remove-workspace-indicator",
     "label": "Hide the workspace indicator",
-    "margin": "12px 0",
-    "defaultValue": false
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "text",
+    "label": "🧭 Toolbar",
+    "margin": "24px 0 12px",
+    "size": "20px"
   },
   {
     "type": "separator",
-    "label": "🎵 Audio and media",
+    "label": "🪟 Window controls",
+    "margin": "16px 0 12px"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-macos-style-buttons",
+    "label": "Use macOS-style window buttons",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "zen.view.experimental-force-window-controls-left",
+    "label": "Put window buttons on the left",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "separator",
+    "label": "🔎 Address bar and toolbar",
+    "margin": "16px 0 12px"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-hide-search-suggestions",
+    "label": "Hide search suggestions in the address bar",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-turn-off-zen-menu-icon",
+    "label": "Use the standard menu icon instead of the Zen logo",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-pinned-extensions-mod",
+    "label": "Restyle pinned extensions (see the README for setup)",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "dropdown",
+    "property": "nebula-bookmarks-autohide",
+    "label": "Bookmarks toolbar",
+    "value": "number",
+    "defaultValue": 0,
+    "placeholder": false,
+    "options": [
+      {
+        "label": "Always visible",
+        "value": 0
+      },
+      {
+        "label": "Show on toolbar hover",
+        "value": 1
+      },
+      {
+        "label": "Show while typing in the address bar",
+        "value": 2
+      },
+      {
+        "label": "Show on hover or while typing",
+        "value": 3
+      }
+    ],
+    "margin": "12px 0"
+  },
+  {
+    "type": "text",
+    "label": "🎬 Motion and media",
+    "margin": "24px 0 12px",
+    "size": "20px"
+  },
+  {
+    "type": "separator",
+    "label": "🔭 Animations",
     "margin": "16px 0 12px"
   },
   {
     "type": "dropdown",
-    "property": "nebula-default-sound-style",
-    "label": "Audio Button Style",
+    "property": "nebula-tab-switch-animation",
+    "label": "Switching tabs",
     "value": "number",
     "defaultValue": 1,
     "placeholder": false,
     "options": [
       {
-        "label": "Native Zen controls",
+        "label": "None",
         "value": 0
       },
       {
         "label": "Default",
+        "value": 1
+      },
+      {
+        "label": "Smooth bounce",
+        "value": 2
+      },
+      {
+        "label": "Bounce up",
+        "value": 3
+      },
+      {
+        "label": "Crossfade",
+        "value": 4
+      },
+      {
+        "label": "Zoom out",
+        "value": 5
+      }
+    ],
+    "margin": "12px 0"
+  },
+  {
+    "type": "dropdown",
+    "property": "nebula-tab-loading-animation",
+    "label": "Page loading",
+    "value": "number",
+    "defaultValue": 1,
+    "placeholder": false,
+    "options": [
+      {
+        "label": "None",
+        "value": 0
+      },
+      {
+        "label": "Default",
+        "value": 1
+      },
+      {
+        "label": "Strong blur",
+        "value": 2
+      },
+      {
+        "label": "Blur and shrink",
+        "value": 3
+      },
+      {
+        "label": "Grayscale",
+        "value": 4
+      },
+      {
+        "label": "Grayscale and blur",
+        "value": 5
+      },
+      {
+        "label": "Classic blur",
+        "value": 6
+      }
+    ],
+    "margin": "12px 0"
+  },
+  {
+    "type": "dropdown",
+    "property": "nebula-urlbar-animation",
+    "label": "Page behind the open address bar",
+    "value": "number",
+    "defaultValue": 1,
+    "placeholder": false,
+    "options": [
+      {
+        "label": "No effect",
+        "value": 0
+      },
+      {
+        "label": "Dim and zoom (default)",
+        "value": 1
+      },
+      {
+        "label": "Shrink",
+        "value": 2
+      },
+      {
+        "label": "Grayscale",
+        "value": 3
+      },
+      {
+        "label": "Blur (heavier on the GPU)",
+        "value": 4
+      }
+    ],
+    "margin": "12px 0"
+  },
+  {
+    "type": "checkbox",
+    "property": "nebula-disable-menu-animations",
+    "label": "Turn off menu animations",
+    "defaultValue": false,
+    "margin": "12px 0"
+  },
+  {
+    "type": "separator",
+    "label": "🎵 Media",
+    "margin": "16px 0 12px"
+  },
+  {
+    "type": "dropdown",
+    "property": "nebula-default-sound-style",
+    "label": "Sound indicator on tabs",
+    "value": "number",
+    "defaultValue": 1,
+    "placeholder": false,
+    "options": [
+      {
+        "label": "Zen default",
+        "value": 0
+      },
+      {
+        "label": "Animated bars",
         "value": 1
       },
       {
@@ -628,12 +716,12 @@
   {
     "type": "dropdown",
     "property": "nebula-media-background-style",
-    "label": "Media Player Background Style",
+    "label": "Artwork style",
     "defaultValue": "blur",
     "placeholder": false,
     "options": [
       {
-        "label": "Simple blur",
+        "label": "Blurred",
         "value": "blur"
       },
       {
@@ -642,70 +730,5 @@
       }
     ],
     "margin": "12px 0"
-  },
-  {
-    "type": "text",
-    "label": "🪐 Optional features",
-    "margin": "24px 0 12px",
-    "size": "20px"
-  },
-  {
-    "type": "separator",
-    "label": "🗂️ Tabs and folders",
-    "margin": "16px 0 12px"
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-disable-container-styling",
-    "label": "Disable container tab styling",
-    "margin": "12px 0",
-    "defaultValue": false
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-pinned-tabs-bg",
-    "label": "Remove pinned tab backgrounds",
-    "margin": "12px 0",
-    "defaultValue": false
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-essentials-gray-icons",
-    "label": "Grayscale idle Essentials icons",
-    "margin": "12px 0",
-    "defaultValue": false
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-folder-styling",
-    "label": "Style Zen folders",
-    "margin": "12px 0",
-    "defaultValue": false
-  },
-  {
-    "type": "separator",
-    "label": "🧰 Toolbar",
-    "margin": "16px 0 12px"
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-turn-off-zen-menu-icon",
-    "label": "Hide the Zen menu icon",
-    "margin": "12px 0",
-    "defaultValue": false
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-hide-search-suggestions",
-    "label": "Hide search suggestions in the address bar",
-    "margin": "12px 0",
-    "defaultValue": false
-  },
-  {
-    "type": "checkbox",
-    "property": "nebula-pinned-extensions-mod",
-    "label": "Style pinned extensions (requires toolbar placement)",
-    "margin": "12px 0",
-    "defaultValue": false
   }
 ]

@@ -29,6 +29,8 @@ export default {
           "zen-folder",
           "zen-library",
           "toolbarbutton",
+          "toolbarpaletteitem",
+          "toolbarspring",
           "browser",
           "groupbox",
           "vbox",

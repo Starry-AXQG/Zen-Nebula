@@ -29,9 +29,39 @@
     corner-shape: round !important;
   }
 
+  /* Sine draws the dialog edge, header rule and separators at 30% white (plus
+   * an inset <hr>), which reads as a heavy outline on glass. Use the same
+   * hairline as the cards. */
   .sineItemPreferenceDialog {
+    border: 1px solid var(--nebula-mods-card-border) !important;
     border-radius: var(--nebula-mods-radius) !important;
     corner-shape: round !important;
+    box-shadow: 0 16px 48px -12px rgb(0 0 0 / 45%) !important;
+  }
+
+  .sineItemPreferenceDialogTopBar {
+    border-bottom-color: var(--nebula-mods-card-border) !important;
+  }
+
+  .sineItemPreferenceDialogContent hr {
+    border: none !important;
+    border-top: 1px solid var(--nebula-mods-card-border) !important;
+    background: none !important;
+    height: 0 !important;
+  }
+
+  /* The label sits on the rule; an opaque box behind it showed on glass. */
+  .sineItemPreferenceDialog .separator-label {
+    background: light-dark(rgb(255 255 255), rgb(24 24 30)) !important;
+    border-radius: var(--nebula-radius-small, 4px);
+  }
+
+  /* showModal() focuses Close, so the thick ring showed on every open. Keep a
+   * slim ring for keyboard focus only. */
+  .sineItemPreferenceDialog :is(button, input, menulist):focus-visible {
+    outline: 1px solid light-dark(rgb(0 0 0 / 35%), rgb(255 255 255 / 35%)) !important;
+    outline-offset: 1px !important;
+    box-shadow: none !important;
   }
 
   /* Config lists need their own opaque surface above the glass dialog.
@@ -119,5 +149,38 @@
   .sineItemPreferenceDialog button,
   #navigation-container button {
     appearance: none !important;
+  }
+
+  /* Sine checks a setting's conditions before its row is in the dialog, so
+   * conditional rows would show on first open. Rows that depend on another
+   * Nebula setting are hidden here; the queries update as settings change. */
+  @media (-moz-pref("nebula-ui-font-custom-enable")) {
+    .sineItemPreferenceDialogContent #nebula-ui-font {
+      display: none !important;
+    }
+  }
+
+  @media not (-moz-pref("nebula-ui-font-custom-enable")) {
+    .sineItemPreferenceDialogContent #nebula-ui-font-custom {
+      display: none !important;
+    }
+  }
+
+  /* Every light/dark string setting is a color; they stay collapsed until
+   * "Customize colors" is on. Saved colors still apply while hidden. */
+  @media not (-moz-pref("nebula-show-color-settings")) {
+    .sineItemPreferenceDialogContent
+      :is(
+        [id^="var-nebula-"]:is([id$="-light"], [id$="-dark"]),
+        #nebula-website-tint-note
+      ) {
+      display: none !important;
+    }
+  }
+
+  @media not (-moz-pref("nebula-media-background-enabled")) {
+    .sineItemPreferenceDialogContent #nebula-media-background-style {
+      display: none !important;
+    }
   }
 }

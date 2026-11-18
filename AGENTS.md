@@ -22,7 +22,7 @@ Rules:
 
 ## What this project is
 
-**Nebula Nova** (v3.6.0, by ItsTatsuya) is a glass-style theme for [Zen Browser](https://zen-browser.app/), forked from [JustADumbPrsn/Zen-Nebula](https://github.com/JustADumbPrsn/Zen-Nebula). It is installed and configured through the [Sine](https://github.com/CosmoCreeper/Sine) mod manager. The Sine mod ID and on-disk folder remain `Nebula` so existing installs and saved preferences keep working. Do not rename them.
+**Nebula Nova** (v4.0.0, by ItsTatsuya) is a glass-style theme for [Zen Browser](https://zen-browser.app/), forked from [JustADumbPrsn/Zen-Nebula](https://github.com/JustADumbPrsn/Zen-Nebula). The repository is [ItsTatsuya/Nebula-Nova](https://github.com/ItsTatsuya/Nebula-Nova) (renamed from Zen-Nebula; GitHub still lists it as a fork). It is installed and configured through the [Sine](https://github.com/CosmoCreeper/Sine) mod manager. The Sine mod ID and on-disk folder remain `Nebula` so existing installs and saved preferences keep working. Do not rename them.
 
 ## Layout
 

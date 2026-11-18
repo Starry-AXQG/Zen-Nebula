@@ -1,12 +1,12 @@
 {
   "name": "nebula-nova",
-  "version": "3.6.1",
+  "version": "4.0.0",
   "author": "ItsTatsuya",
   "description": "A glass-inspired theme for Zen Browser with customizable blur, animation, and media artwork.",
-  "homepage": "https://github.com/ItsTatsuya/Zen-Nebula",
+  "homepage": "https://github.com/ItsTatsuya/Nebula-Nova",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ItsTatsuya/Zen-Nebula.git"
+    "url": "https://github.com/ItsTatsuya/Nebula-Nova.git"
   },
   "private": true,
   "scripts": {

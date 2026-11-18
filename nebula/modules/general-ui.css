@@ -276,3 +276,67 @@ browser[transparent="true"] {
   transform: scale(1.05);
   box-shadow: 0 6px 20px var(--nebula-color-shadow) !important;
 }
+
+/* ---------------- GLANCE AND SPLIT VIEW CONTROLS ---------------- */
+
+/* Glance buttons: dark glass discs instead of Zen's bright pills. Zen's
+ * will-change on the container makes it a backdrop root, which would leave
+ * the buttons nothing to blur, so it is dropped (the hint is optional). */
+.zen-glance-sidebar-container {
+  will-change: auto !important;
+
+  & toolbarbutton {
+    background: light-dark(
+      rgb(255 255 255 / 55%),
+      rgb(20 20 20 / 55%)
+    ) !important;
+    color: light-dark(rgb(30 30 30), rgb(235 235 235)) !important;
+    backdrop-filter: var(--nebula-glass) !important;
+    box-shadow:
+      inset 0 0 0 1px var(--nebula-color),
+      0 4px 14px var(--nebula-color-shadow) !important;
+
+    &:hover {
+      background: light-dark(
+        rgb(255 255 255 / 75%),
+        rgb(45 45 45 / 70%)
+      ) !important;
+    }
+  }
+}
+
+/* Split view header: frosted glass instead of a solid accent tab. */
+.zen-view-splitter-header {
+  background: var(--nebula-color-glass) !important;
+  backdrop-filter: var(--nebula-glass) !important;
+  box-shadow:
+    inset 0 0 0 1px var(--nebula-color),
+    0 4px 14px var(--nebula-color-shadow) !important;
+  border-radius: 0 0 var(--nebula-radius-inner) var(--nebula-radius-inner) !important;
+}
+
+.zen-view-splitter-header-container toolbarbutton {
+  color: light-dark(rgb(30 30 30), rgb(235 235 235)) !important;
+}
+
+/* Transparent pages leave plain glass see-through; see sidebar.css. */
+@media (-moz-pref("browser.tabs.allow_transparent_browser")) {
+  .zen-glance-sidebar-container toolbarbutton,
+  .zen-view-splitter-header {
+    backdrop-filter: var(
+      --nebula-glass-underlay-dark,
+      url("../filters/glass-underlay.svg#dark")
+    ) !important;
+  }
+
+  :root[zen-should-be-dark-mode="false"]
+    :is(
+      .zen-glance-sidebar-container toolbarbutton,
+      .zen-view-splitter-header
+    ) {
+    backdrop-filter: var(
+      --nebula-glass-underlay-light,
+      url("../filters/glass-underlay.svg#light")
+    ) !important;
+  }
+}
